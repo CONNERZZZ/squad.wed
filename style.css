@@ -1,5 +1,5 @@
 /* =========================================
-   2SQUAD.STORE - FULLY RESPONSIVE VERSION
+   2SQUAD.STORE - FULLY RESPONSIVE & BUG FREE
    ========================================= */
 
 :root {
@@ -17,14 +17,20 @@
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
-    -webkit-tap-highlight-color: transparent; /* เอาไฮไลท์สีฟ้าตอนกดในมือถือออก */
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ล็อกความกว้างหน้าจอแบบ 100% ป้องกันการเลื่อนซ้าย-ขวา */
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden; 
     width: 100%;
 }
 
@@ -32,7 +38,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     background-image: 
         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
@@ -47,6 +53,9 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     text-transform: uppercase;
+    /* สั่งให้คำที่ยาวเกินไปปัดบรรทัดอัตโนมัติ */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 @keyframes fadeInUp {
@@ -76,15 +85,15 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 4vw, 1.5rem); /* ให้โลโก้ย่อตามจอเล็กสุด */
     letter-spacing: -1px;
     position: relative;
-    z-index: 1001; /* ให้อยู่เหนือ Mobile Menu */
+    z-index: 1001;
 }
 
 .logo span.tm {
     color: var(--accent);
-    font-size: 1rem;
+    font-size: 0.8em;
     margin-left: 2px;
 }
 
@@ -107,7 +116,6 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     transition: 0.3s;
 }
 
-/* Hover เฉพาะในอุปกรณ์ที่มีเมาส์ ป้องกันบัคในมือถือ */
 @media (hover: hover) {
     .nav-link:hover { color: var(--accent); }
     .btn-primary:hover { background-color: var(--accent); color: var(--text-color); }
@@ -117,12 +125,13 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 }
 
 .cart-btn {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--accent);
     border: 1px solid var(--accent);
-    padding: 8px 16px;
+    padding: 8px 12px;
     border-radius: 4px;
     font-weight: 600;
+    white-space: nowrap; /* ห้ามให้คำว่า My Cart ตัดบรรทัด */
 }
 
 /* --- MOBILE MENU --- */
@@ -150,18 +159,18 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     justify-content: center;
     align-items: center;
     gap: 40px;
-    transform: translateY(-100%); /* ซ่อนไว้ด้านบน */
+    transform: translateY(-100%);
     transition: transform 0.5s var(--ease-out);
 }
 
 .mobile-nav-overlay.active {
-    transform: translateY(0); /* เลื่อนลงมา */
+    transform: translateY(0);
 }
 
 .mobile-nav-link {
     color: var(--text-color);
     text-decoration: none;
-    font-size: 2.5rem;
+    font-size: 2rem;
     transition: 0.3s;
 }
 
@@ -187,6 +196,7 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     padding: 120px 5% 0;
     display: flex;
     align-items: center;
+    overflow: hidden; /* กันตัวหนังสือใน Hero ล้นจอ */
 }
 
 .hero-container {
@@ -207,9 +217,9 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     font-size: 0.85rem;
 }
 
-/* ใช้ clamp เพื่อให้ตัวหนังสือปรับขนาดอัตโนมัติตามจอ */
 .hero h1 {
-    font-size: clamp(3.5rem, 8vw, 6rem);
+    /* ปรับขนาดขั้นต่ำให้เล็กลง (2.5rem) เพื่อรองรับจอมือถือเล็ก */
+    font-size: clamp(2.5rem, 8vw, 6rem);
     line-height: 1;
     margin-bottom: 20px;
 }
@@ -219,18 +229,19 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 .hero p {
     color: var(--dim-text);
     margin-bottom: 40px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     max-width: 500px;
 }
 
 .btn-primary {
     display: inline-block;
-    padding: 15px 35px;
+    padding: 15px 30px;
     background-color: var(--text-color);
     color: var(--bg-color);
     text-decoration: none;
     border-radius: 4px;
     transition: 0.3s;
+    font-size: 0.9rem;
 }
 
 /* --- MARQUEE --- */
@@ -241,6 +252,8 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     padding: 15px 0;
     overflow: hidden;
     display: flex;
+    width: 100%;
+    max-width: 100vw;
 }
 
 .marquee-inner {
@@ -250,7 +263,7 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 }
 
 .marquee-content {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     padding-right: 20px;
     color: var(--text-color);
     white-space: nowrap;
@@ -264,6 +277,7 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 /* --- COLLECTION --- */
 .collection {
     padding: 100px 5%;
+    overflow: hidden;
 }
 
 .section-header {
@@ -274,13 +288,14 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 }
 
 .section-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    /* ปรับให้เล็กลงในมือถือ ป้องกันคำว่า COLLECTION ล้น */
+    font-size: clamp(2rem, 6vw, 4rem);
     line-height: 1;
 }
 
 .tech-spec {
     color: var(--accent);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .grid-container {
@@ -290,7 +305,7 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 }
 
 .product-item { 
-    grid-column: span 4; /* ในจอคอม 1 แถวมี 3 ชิ้น (12/4) */
+    grid-column: span 4; 
 }
 
 .img-wrapper {
@@ -299,7 +314,7 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     border-radius: 8px;
     background-color: var(--surface-color);
     transform: translateZ(0); 
-    aspect-ratio: 4 / 5; /* สัดส่วนยอดฮิตสำหรับเสื้อผ้า */
+    aspect-ratio: 4 / 5; 
 }
 
 .product-img {
@@ -317,13 +332,15 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 }
 
 .product-info h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 8px;
+    line-height: 1.3;
 }
 
 .product-price {
     color: var(--accent);
     font-weight: 600;
+    font-size: 0.95rem;
 }
 
 /* --- SCROLL REVEAL --- */
@@ -347,10 +364,12 @@ footer {
     background-color: var(--surface-color);
     text-align: center;
     border-top: 1px solid var(--border-color);
+    overflow: hidden; /* กันตัวหนังสือโลโก้ล้นจอ */
 }
 
 .footer-huge-logo {
-    font-size: clamp(3rem, 15vw, 12rem);
+    /* ย่อขนาดให้พอดีจอ ป้องกันการดันขอบจอ */
+    font-size: clamp(2.5rem, 12vw, 10rem);
     line-height: 0.8;
     color: transparent;
     -webkit-text-stroke: 1px var(--dim-text);
@@ -363,7 +382,7 @@ footer {
     justify-content: space-between;
     align-items: center;
     color: var(--dim-text);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .socials {
@@ -381,28 +400,24 @@ footer {
 }
 
 /* =========================================
-   MOBILE RESPONSIVE (ปรับแต่งการแสดงผลบนอุปกรณ์ต่างๆ)
+   MOBILE RESPONSIVE
    ========================================= */
 
-/* สำหรับ Tablet ทั่วไป */
 @media (max-width: 1024px) {
-    .product-item { grid-column: span 6; } /* ใน Tablet 1 แถวมี 2 ชิ้น */
+    .product-item { grid-column: span 6; }
     .hero { padding-top: 140px; }
 }
 
-/* สำหรับ Mobile (มือถือ) */
 @media (max-width: 768px) {
-    .desktop-nav { display: none; } /* ซ่อนเมนูคอม */
-    .mobile-menu-btn { display: block; } /* เปิดปุ่ม Hamburger */
+    .desktop-nav { display: none; } 
+    .mobile-menu-btn { display: block; } 
     
-    .hero { padding-top: 120px; align-items: flex-start; }
-    .hero-container { flex-direction: column; gap: 30px; text-align: center; }
+    .hero { padding-top: 100px; align-items: flex-start; }
+    .hero-container { flex-direction: column; gap: 20px; text-align: left; }
     
-    .section-header { flex-direction: column; text-align: center; gap: 15px; margin-bottom: 40px; }
+    .section-header { flex-direction: column; text-align: left; gap: 10px; margin-bottom: 30px; align-items: flex-start; }
     
-    .product-item { grid-column: span 12; } /* มือถือแสดง 1 ชิ้นเต็มแถว */
-    
-    /* ปรับให้รูปในมือถือไม่กินความสูงเกินไป สัดส่วนเป็นสี่เหลี่ยมจัตุรัสหรือ 4:5 */
+    .product-item { grid-column: span 12; } 
     .img-wrapper { aspect-ratio: 4 / 5; } 
     
     .collection { padding: 60px 5%; }
