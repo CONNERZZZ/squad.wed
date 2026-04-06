@@ -2,8 +2,8 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2SQUAD™</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2SQUAD™ | CULT STREET ESSENTIALS</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -18,18 +18,33 @@
             <a href="#collection" class="nav-link">COLLECTION</a>
             <a href="#archive" class="nav-link">ARCHIVE</a>
         </nav>
-        <div class="cart-btn">MY CART (0)</div>
+        <div class="nav-right">
+            <div class="cart-btn">MY CART (0)</div>
+            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
     </header>
+
+    <div class="mobile-nav-overlay">
+        <a href="#collection" class="mobile-nav-link">COLLECTION</a>
+        <a href="#archive" class="mobile-nav-link">ARCHIVE</a>
+        <div class="mobile-socials">
+            <a href="https://www.instagram.com/2squad.store" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+    </div>
 
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content-wrapper">
                 <div class="loading-label">squad.store</div>
                 <h1>2SQUAD™<br>STORE<span class="hero-accent">.</span></h1>
-                <p></p>
+                <p>CULT STREET ESSENTIALS // UNTAMED VIBES.</p>
                 <a href="#collection" class="btn-primary">EXPLORE THE DROP</a>
             </div>
-        </div>
+            </div>
     </section>
 
     <div class="marquee-container">
@@ -45,7 +60,7 @@
 
     <section id="collection" class="collection">
         <div class="section-header">
-            <h2 class="section-title">collection<br></h2>
+            <h2 class="section-title">COLLECTION<br></h2>
             <div class="tech-spec">SPEC.ID: DRPL-1 // ASSET_01</div>
         </div>
         
@@ -62,20 +77,20 @@
 
             <!-- <div class="product-item reveal delay-1">
                 <div class="img-wrapper">
-                    <img src="./images/comming.png" alt="Item 2" class="product-img">
+                    <img src="./images/1squad.png" alt="Item 2" class="product-img">
                 </div>
                 <div class="product-info">
-                    <h3> ! </h3>
+                    <h3>COMING SOON</h3>
                     <p class="product-price">THB 0 B</p>
                 </div>
             </div>
 
             <div class="product-item reveal delay-2">
                 <div class="img-wrapper">
-                    <img src="./images/comming.png" alt="Item 3" class="product-img">
+                    <img src="./images/1squad.png" alt="Item 3" class="product-img">
                 </div>
                 <div class="product-info">
-                    <h3> ! </h3>
+                    <h3>COMING SOON</h3>
                     <p class="product-price">THB 0 B</p>
                 </div>
             </div> -->
@@ -96,6 +111,7 @@
     </footer>
 
     <script>
+        // ระบบเลื่อนแล้วแสดง (Scroll Reveal)
         function activeReveal() {
             const reveals = document.querySelectorAll('.reveal');
             const windowHeight = window.innerHeight;
@@ -112,6 +128,34 @@
 
         window.addEventListener('scroll', activeReveal);
         setTimeout(activeReveal, 100); 
+
+        // ระบบเมนูมือถือ (Hamburger Menu)
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileNavOverlay.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if(mobileNavOverlay.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+                document.body.style.overflow = 'hidden'; // ป้องกันการเลื่อนจอเมื่อเปิดเมนู
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNavOverlay.classList.remove('active');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-xmark');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+                document.body.style.overflow = 'auto';
+            });
+        });
     </script>
 
 </body>

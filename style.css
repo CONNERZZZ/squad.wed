@@ -1,5 +1,5 @@
 /* =========================================
-   2SQUAD.STORE - FINAL PERFECT VERSION
+   2SQUAD.STORE - FULLY RESPONSIVE VERSION
    ========================================= */
 
 :root {
@@ -7,7 +7,7 @@
     --surface-color: #111111; 
     --text-color: #ffffff; 
     --dim-text: #888888; 
-    --accent: #ff69b4; /* สีชมพูเข้ากับลายเสื้อ */
+    --accent: #ff69b4; 
     --border-color: #222222;
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -17,6 +17,7 @@
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent; /* เอาไฮไลท์สีฟ้าตอนกดในมือถือออก */
 }
 
 body {
@@ -42,7 +43,7 @@ body {
     mask-image: linear-gradient(to top, transparent, black 80%);
 }
 
-h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-link, .btn-primary, .tech-spec {
+h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-link, .mobile-nav-link, .btn-primary, .tech-spec {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     text-transform: uppercase;
@@ -68,7 +69,7 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     justify-content: space-between;
     align-items: center;
     padding: 15px 5%;
-    background: rgba(5, 5, 5, 0.9);
+    background: rgba(5, 5, 5, 0.95);
     backdrop-filter: blur(10px);
     z-index: 999;
     border-bottom: 1px solid var(--border-color);
@@ -77,12 +78,21 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 .logo {
     font-size: 1.5rem;
     letter-spacing: -1px;
+    position: relative;
+    z-index: 1001; /* ให้อยู่เหนือ Mobile Menu */
 }
 
 .logo span.tm {
     color: var(--accent);
     font-size: 1rem;
     margin-left: 2px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 1001;
 }
 
 .desktop-nav {
@@ -97,8 +107,13 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     transition: 0.3s;
 }
 
-.nav-link:hover {
-    color: var(--accent);
+/* Hover เฉพาะในอุปกรณ์ที่มีเมาส์ ป้องกันบัคในมือถือ */
+@media (hover: hover) {
+    .nav-link:hover { color: var(--accent); }
+    .btn-primary:hover { background-color: var(--accent); color: var(--text-color); }
+    .footer-huge-logo:hover { color: var(--text-color); -webkit-text-stroke: 1px transparent; animation: glitch 0.3s infinite alternate; }
+    .socials a:hover { color: var(--accent); transform: scale(1.2) translateY(-2px); }
+    .product-item:hover .product-img { transform: scale(1.05); }
 }
 
 .cart-btn {
@@ -108,6 +123,62 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     padding: 8px 16px;
     border-radius: 4px;
     font-weight: 600;
+}
+
+/* --- MOBILE MENU --- */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(5, 5, 5, 0.98);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    transform: translateY(-100%); /* ซ่อนไว้ด้านบน */
+    transition: transform 0.5s var(--ease-out);
+}
+
+.mobile-nav-overlay.active {
+    transform: translateY(0); /* เลื่อนลงมา */
+}
+
+.mobile-nav-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 2.5rem;
+    transition: 0.3s;
+}
+
+.mobile-nav-link:active {
+    color: var(--accent);
+}
+
+.mobile-socials {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.mobile-socials a {
+    color: var(--dim-text);
+    font-size: 1.8rem;
+    transition: 0.3s;
 }
 
 /* --- HERO SECTION --- */
@@ -136,15 +207,14 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     font-size: 0.85rem;
 }
 
+/* ใช้ clamp เพื่อให้ตัวหนังสือปรับขนาดอัตโนมัติตามจอ */
 .hero h1 {
     font-size: clamp(3.5rem, 8vw, 6rem);
     line-height: 1;
     margin-bottom: 20px;
 }
 
-.hero-accent {
-    color: var(--accent);
-}
+.hero-accent { color: var(--accent); }
 
 .hero p {
     color: var(--dim-text);
@@ -161,32 +231,6 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     text-decoration: none;
     border-radius: 4px;
     transition: 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: var(--accent);
-    color: var(--text-color);
-}
-
-.hero-img-wrapper {
-    flex: 1;
-    height: 70vh;
-    border-radius: 8px;
-    overflow: hidden;
-    animation: fadeInUp 1s var(--ease-out) 0.3s forwards;
-    opacity: 0;
-}
-
-.hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center; 
-    transition: transform 1s var(--ease-out);
-}
-
-.hero-img-wrapper:hover .hero-img {
-    transform: scale(1.03);
 }
 
 /* --- MARQUEE --- */
@@ -246,7 +290,7 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
 }
 
 .product-item { 
-    grid-column: span 4; 
+    grid-column: span 4; /* ในจอคอม 1 แถวมี 3 ชิ้น (12/4) */
 }
 
 .img-wrapper {
@@ -255,7 +299,7 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     border-radius: 8px;
     background-color: var(--surface-color);
     transform: translateZ(0); 
-    aspect-ratio: 9 / 16; 
+    aspect-ratio: 4 / 5; /* สัดส่วนยอดฮิตสำหรับเสื้อผ้า */
 }
 
 .product-img {
@@ -264,10 +308,6 @@ h1, h2, h3, .logo, .footer-huge-logo, .marquee-content, .loading-label, .nav-lin
     object-fit: contain; 
     object-position: center; 
     transition: transform 0.8s var(--ease-out);
-}
-
-.product-item:hover .product-img {
-    transform: scale(1.05);
 }
 
 .product-info {
@@ -310,18 +350,12 @@ footer {
 }
 
 .footer-huge-logo {
-    font-size: clamp(4rem, 15vw, 12rem);
+    font-size: clamp(3rem, 15vw, 12rem);
     line-height: 0.8;
     color: transparent;
     -webkit-text-stroke: 1px var(--dim-text);
     margin-bottom: 50px;
     transition: 0.3s;
-}
-
-.footer-huge-logo:hover {
-    color: var(--text-color);
-    -webkit-text-stroke: 1px transparent;
-    animation: glitch 0.3s infinite alternate;
 }
 
 .footer-bottom {
@@ -332,7 +366,6 @@ footer {
     font-size: 0.85rem;
 }
 
-/* --- Social Icons Update --- */
 .socials {
     display: flex;
     gap: 25px;
@@ -342,29 +375,38 @@ footer {
 .socials a {
     color: var(--dim-text);
     text-decoration: none;
-    font-size: 1.4rem; /* ขยายขนาดไอคอนให้ชัดเจนขึ้น */
+    font-size: 1.4rem; 
     transition: color 0.3s, transform 0.3s var(--ease-out);
-    display: inline-block; /* เพื่อให้ transform ทำงานได้ดี */
+    display: inline-block; 
 }
 
-.socials a:hover {
-    color: var(--accent);
-    transform: scale(1.2) translateY(-2px); /* เอาเมาส์ชี้แล้วเด้งขึ้นและใหญ่ขึ้นนิดนึง */
+/* =========================================
+   MOBILE RESPONSIVE (ปรับแต่งการแสดงผลบนอุปกรณ์ต่างๆ)
+   ========================================= */
+
+/* สำหรับ Tablet ทั่วไป */
+@media (max-width: 1024px) {
+    .product-item { grid-column: span 6; } /* ใน Tablet 1 แถวมี 2 ชิ้น */
+    .hero { padding-top: 140px; }
 }
 
-/* --- MOBILE RESPONSIVE --- */
-@media (max-width: 900px) {
-    .desktop-nav { display: none; }
+/* สำหรับ Mobile (มือถือ) */
+@media (max-width: 768px) {
+    .desktop-nav { display: none; } /* ซ่อนเมนูคอม */
+    .mobile-menu-btn { display: block; } /* เปิดปุ่ม Hamburger */
     
-    .hero { padding-top: 100px; }
+    .hero { padding-top: 120px; align-items: flex-start; }
     .hero-container { flex-direction: column; gap: 30px; text-align: center; }
-    .hero-img-wrapper { width: 100%; height: 50vh; }
     
     .section-header { flex-direction: column; text-align: center; gap: 15px; margin-bottom: 40px; }
     
-    .product-item { grid-column: span 12; }
+    .product-item { grid-column: span 12; } /* มือถือแสดง 1 ชิ้นเต็มแถว */
+    
+    /* ปรับให้รูปในมือถือไม่กินความสูงเกินไป สัดส่วนเป็นสี่เหลี่ยมจัตุรัสหรือ 4:5 */
+    .img-wrapper { aspect-ratio: 4 / 5; } 
+    
+    .collection { padding: 60px 5%; }
     
     .footer-bottom { flex-direction: column; gap: 20px; align-items: center; text-align: center; }
-    
     .socials { gap: 30px; margin-top: 10px; }
 }
